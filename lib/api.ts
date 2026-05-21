@@ -150,6 +150,7 @@ export const inboxApi = {
     api.delete(`/inbox/${conversationId}/messages/${messageId}`),
 };
 
+<<<<<<< HEAD
 // ─── Services ─────────────────────────────────────────────────────────────────
 export const servicesApi = {
   getAll: (params?: object) => api.get("/services", { params }),
@@ -159,6 +160,8 @@ export const servicesApi = {
   delete: (id: string) => api.delete(`/services/${id}`),
 };
 
+=======
+>>>>>>> 876d0471d98ddbc979b64b8ba5a90cf27cef92b7
 // ─── Calendar ─────────────────────────────────────────────────────────────────
 export const calendarApi = {
   getEvents: (params?: object) => api.get("/calendar", { params }),
@@ -179,6 +182,7 @@ export const appointmentsApi = {
     api.put(`/appointments/${id}`, data),
   getAvailableSlots: (params?: object) =>
     api.get("/appointments/available-slots", { params }),
+<<<<<<< HEAD
   getEmployees: (params?: object) =>
     api.get("/appointments/employees", { params }),
 };
@@ -186,6 +190,8 @@ export const appointmentsApi = {
 // ─── Employees (read-only for admin) ─────────────────────────────────────────
 export const employeesApi = {
   getAll: (params?: object) => api.get("/appointments/employees", { params }),
+=======
+>>>>>>> 876d0471d98ddbc979b64b8ba5a90cf27cef92b7
 };
 
 // ─── Kora Assistant ──────────────────────────────────────────────────────────

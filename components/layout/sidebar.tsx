@@ -7,7 +7,11 @@ import {
   LayoutDashboard, Sparkles, Calendar, Mail, Users, UserCheck,
   MapPin, BarChart3, GitBranch, CheckSquare, Activity,
   HeadphonesIcon, Settings, LogOut, ChevronLeft, ChevronRight,
+<<<<<<< HEAD
   Zap, Target, Scissors
+=======
+  Zap, Target
+>>>>>>> 876d0471d98ddbc979b64b8ba5a90cf27cef92b7
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -21,7 +25,10 @@ const navItems = [
   { href: "/leads", label: "Leads", icon: Target, badge: "24" },
   { href: "/lead-generator", label: "Lead Generator", icon: Zap },
   { href: "/customers", label: "Customers", icon: Users },
+<<<<<<< HEAD
   { href: "/services", label: "Services", icon: Scissors },
+=======
+>>>>>>> 876d0471d98ddbc979b64b8ba5a90cf27cef92b7
   { href: "/partners", label: "Partners", icon: UserCheck },
   { href: "/territories", label: "Territories", icon: MapPin },
   { href: "/analytics", label: "Sales Analytics", icon: BarChart3 },
