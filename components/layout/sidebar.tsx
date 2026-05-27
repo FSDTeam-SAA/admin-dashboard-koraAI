@@ -11,10 +11,10 @@ import {
   X, Zap, Target, Scissors
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
 import { useMobileNav } from "@/components/layout/mobile-nav-context";
-import { approvalsApi, inboxApi, leadsApi } from "@/lib/api";
+import { approvalsApi, inboxApi, leadsApi, userApi } from "@/lib/api";
 import { useSocketEvent } from "@/lib/socket";
 
 const navItems = [
@@ -46,6 +46,25 @@ export function Sidebar() {
   const { data: session } = useSession();
   const { isOpen, setIsOpen } = useMobileNav();
   const [collapsed, setCollapsed] = useState(false);
+
+  const { data: profileResponse } = useQuery({
+    queryKey: ["user-profile"],
+    queryFn: () => userApi.getProfile().then((r) => r.data),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const profileData = profileResponse?.data;
+  const sessionUser = session?.user as
+    | { name?: string; role?: string; profileImage?: { url?: string } }
+    | undefined;
+
+  const displayName = profileData?.name || sessionUser?.name || "Admin User";
+  const displayImage = profileData?.profileImage?.url || sessionUser?.profileImage?.url || "";
+  const displayRole = profileData?.role || sessionUser?.role || "admin";
+  const roleLabel =
+    displayRole === "admin"
+      ? "System Administrator"
+      : String(displayRole).replace(/_/g, " ");
 
   useEffect(() => {
     setIsOpen(false);
@@ -165,12 +184,15 @@ export function Sidebar() {
         <div className="border-t border-[#1e2d40] p-3">
           <div className={cn("flex items-center gap-2 rounded-lg p-2", collapsed && "justify-center")}>
             <Avatar className="h-8 w-8 shrink-0">
-              <AvatarFallback>{getInitials(session?.user?.name || "Admin")}</AvatarFallback>
+              {displayImage ? (
+                <AvatarImage src={displayImage} alt={displayName} />
+              ) : null}
+              <AvatarFallback>{getInitials(displayName)}</AvatarFallback>
             </Avatar>
             {!collapsed && (
               <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-medium text-gray-200">{session?.user?.name || "Admin User"}</p>
-                <p className="truncate text-[10px] text-gray-500">System Administrator</p>
+                <p className="truncate text-xs font-medium text-gray-200">{displayName}</p>
+                <p className="truncate text-[10px] capitalize text-gray-500">{roleLabel}</p>
               </div>
             )}
             {!collapsed && (

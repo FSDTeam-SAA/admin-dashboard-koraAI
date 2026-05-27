@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 import { partnersApi, territoriesApi } from "@/lib/api";
 import {
   Dialog,
@@ -48,6 +49,7 @@ export function PartnerFormDialog({ open, onOpenChange, partner }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [commissionRate, setCommissionRate] = useState(20);
@@ -69,6 +71,7 @@ export function PartnerFormDialog({ open, onOpenChange, partner }: Props) {
       setName(partner.userId?.name || "");
       setEmail(partner.userId?.email || "");
       setPassword("");
+      setShowPassword(false);
       setPhoneNumber(partner.userId?.phoneNumber || "");
       setBusinessName(partner.businessName || "");
       setCommissionRate(partner.commissionRate ?? 20);
@@ -79,6 +82,7 @@ export function PartnerFormDialog({ open, onOpenChange, partner }: Props) {
       setName("");
       setEmail("");
       setPassword("");
+      setShowPassword(false);
       setPhoneNumber("");
       setBusinessName("");
       setCommissionRate(20);
@@ -176,13 +180,28 @@ export function PartnerFormDialog({ open, onOpenChange, partner }: Props) {
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="space-y-1.5">
                   <Label htmlFor="partner-password">Temporary password</Label>
-                  <Input
-                    id="partner-password"
-                    type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    required
-                  />
+                  <div className="relative">
+                    <Input
+                      id="partner-password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      className="pr-10"
+                      required
+                    />
+                    <button
+                      type="button"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      onClick={() => setShowPassword((current) => !current)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-300"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="partner-phone">Phone</Label>
