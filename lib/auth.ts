@@ -1,7 +1,7 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { isAdminRole, normalizeRole } from "@/lib/roles";
 
-const allowedRoles = new Set(["admin"]);
 const authCookiePrefix = "admin-dashboard";
 
 class DashboardCredentialsError extends CredentialsSignin {
@@ -59,7 +59,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             throw new DashboardCredentialsError(mapAuthErrorCode(data?.message));
           }
 
-          if (!allowedRoles.has(data.data.role)) {
+          const role = normalizeRole(data.data.role);
+
+          if (!isAdminRole(role)) {
             throw new DashboardCredentialsError("role_not_allowed");
           }
 
@@ -67,7 +69,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             id: data.data._id,
             _id: data.data._id,
             email: data.data.email,
-            role: data.data.role,
+            role,
             name: data.data.name,
             profileImage: data.data.profileImage,
             accessToken: data.data.accessToken,
