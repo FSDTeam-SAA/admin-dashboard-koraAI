@@ -67,7 +67,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           const role = normalizeRole(data.data.role);
 
-          if (!isAdminRole(role)) {
+          // Role-scoped staff (supporter, developer, sales ...) also carry role "admin";
+          // they have their own dashboards and must not enter the platform admin shell.
+          if (!isAdminRole(role) || data.data.scopedStaff === true) {
             throw new DashboardCredentialsError("role_not_allowed");
           }
 
